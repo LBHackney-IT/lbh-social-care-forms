@@ -227,7 +227,8 @@ workflows:
       #         only: main
       - assume-role-staging:
           context: api-assume-role-staging-context
-          # requires:
+          requires:
+            - build
           #   - unit-tests
           #   - e2e
           #   - owasp-zap-baseline-scan
