@@ -233,13 +233,13 @@ workflows:
           #   - owasp-zap-baseline-scan
           filters:
             branches:
-              only: main
+              only: sct-815-next-public-test
       - build-deploy-staging:
           requires:
             - assume-role-staging
           filters:
             branches:
-              only: main
+              only: sct-815-next-public-test
       # - permit-deploy-production:
       #     type: approval
       #     requires:
