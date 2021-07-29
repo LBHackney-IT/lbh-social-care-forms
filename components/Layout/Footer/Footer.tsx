@@ -5,6 +5,8 @@ import s from './Footer.module.scss';
 const Footer = (): React.ReactElement => {
   const { user } = useAuth();
 
+  const feedbackLink = process.env.NEXT_PUBLIC_FEEDBACK_LINK || '';
+
   return (
     <footer className={`${s.footer}`} role="contentinfo">
       <div className="govuk-width-container">
@@ -12,9 +14,7 @@ const Footer = (): React.ReactElement => {
           <a href="https://sites.google.com/hackney.gov.uk/moderntoolsforsocialcare">
             Roadmap
           </a>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScILbPD1ioKHzp1D3HN4_DKaxV2tpWLMu8upSSqNgSPCo85cg/viewform">
-            Give feedback
-          </a>
+          <a href={feedbackLink}>Give feedback</a>
         </nav>
 
         <div className={s.meta}>Built and maintained by HackIT.</div>

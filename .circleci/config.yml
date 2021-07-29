@@ -61,7 +61,7 @@ jobs:
       - *attach_workspace
       - run:
           name: Build app
-          command: yarn build
+          command: NEXT_PUBLIC_FEEDBACK_LINK=$NEXT_PUBLIC_FEEDBACK_LINK_STAGING yarn build
       - persist_to_workspace:
           root: *workspace_root
           paths:
@@ -204,32 +204,33 @@ workflows:
   continuous-delivery:
     jobs:
       - install-dependencies
-      - unit-tests:
-          requires:
-            - install-dependencies
+      # - unit-tests:
+      #     requires:
+      #       - install-dependencies
       - build:
           requires:
-            - unit-tests
-      - e2e:
-          requires:
-            - build
-      - owasp-zap-baseline-scan:
-          requires:
-            - build
-      - generate-draft-github-release:
-          requires:
-            - unit-tests
-            - e2e
-            - owasp-zap-baseline-scan
-          filters:
-            branches:
-              only: main
+            - install-dependencies
+      #      - unit-tests
+      # - e2e:
+      #     requires:
+      #       - build
+      # - owasp-zap-baseline-scan:
+      #     requires:
+      #       - build
+      # - generate-draft-github-release:
+      #     requires:
+      #       - unit-tests
+      #       - e2e
+      #       - owasp-zap-baseline-scan
+      #     filters:
+      #       branches:
+      #         only: main
       - assume-role-staging:
           context: api-assume-role-staging-context
-          requires:
-            - unit-tests
-            - e2e
-            - owasp-zap-baseline-scan
+          # requires:
+          #   - unit-tests
+          #   - e2e
+          #   - owasp-zap-baseline-scan
           filters:
             branches:
               only: main
@@ -239,49 +240,49 @@ workflows:
           filters:
             branches:
               only: main
-      - permit-deploy-production:
-          type: approval
-          requires:
-            - build-deploy-staging
-          filters:
-            branches:
-              only: main
-      - assume-role-production:
-          context: api-assume-role-production-context
-          requires:
-            - permit-deploy-production
-          filters:
-            branches:
-              only: main
-      - build-deploy-production:
-          requires:
-            - assume-role-production
-          filters:
-            branches:
-              only: main
-      - permit-deploy-mosaic-production:
-          type: approval
-          requires:
-            - build-deploy-staging
-          filters:
-            branches:
-              only: main
-      - assume-role-mosaic-production:
-          context: api-assume-role-social-care-production-context
-          requires:
-            - permit-deploy-mosaic-production
-          filters:
-            branches:
-              only: main
-      - build-deploy-mosaic-production:
-          requires:
-            - assume-role-mosaic-production
-          filters:
-            branches:
-              only: main
-      - generate-github-release:
-          requires:
-            - build-deploy-production
-          filters:
-            branches:
-              only: main
+      # - permit-deploy-production:
+      #     type: approval
+      #     requires:
+      #       - build-deploy-staging
+      #     filters:
+      #       branches:
+      #         only: main
+      # - assume-role-production:
+      #     context: api-assume-role-production-context
+      #     requires:
+      #       - permit-deploy-production
+      #     filters:
+      #       branches:
+      #         only: main
+      # - build-deploy-production:
+      #     requires:
+      #       - assume-role-production
+      #     filters:
+      #       branches:
+      #         only: main
+      # - permit-deploy-mosaic-production:
+      #     type: approval
+      #     requires:
+      #       - build-deploy-staging
+      #     filters:
+      #       branches:
+      #         only: main
+      # - assume-role-mosaic-production:
+      #     context: api-assume-role-social-care-production-context
+      #     requires:
+      #       - permit-deploy-mosaic-production
+      #     filters:
+      #       branches:
+      #         only: main
+      # - build-deploy-mosaic-production:
+      #     requires:
+      #       - assume-role-mosaic-production
+      #     filters:
+      #       branches:
+      #         only: main
+      # - generate-github-release:
+      #     requires:
+      #       - build-deploy-production
+      #     filters:
+      #       branches:
+      #         only: main
