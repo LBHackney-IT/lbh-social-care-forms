@@ -21,6 +21,11 @@ export const getFeatureFlags = ({
       isActive: environmentName === 'production',
     },
 
+    // FEATURE-FLAG-EXPIRES [2021-08-31]: person-timeline
+    media: {
+      isActive: environmentName === 'development',
+    },
+
     /*
       The feature-flags-implementation-proof has been setup to have an expiry date in the far future.
       The FEATURE-FLAG-EXPIRES comment above will cause ESLint errors once the date in the square brackets has passed.

@@ -13,6 +13,7 @@ import { canManageCases } from 'lib/permissions';
 import AddFormDialog from 'components/AddFormDialog/AddFormDialog';
 import { useState } from 'react';
 import Banner from 'components/FlexibleForms/Banner';
+import { useFeatureFlags } from 'lib/feature-flags/feature-flags';
 
 interface NavLinkProps {
   href: string;
@@ -86,6 +87,13 @@ const Layout = ({ person, children }: Props): React.ReactElement => {
     navigation.unshift({
       text: 'Timeline',
       href: `/people/${person.id}`,
+    });
+
+  const { isFeatureActive } = useFeatureFlags();
+  if (isFeatureActive('media'))
+    navigation.unshift({
+      text: `Media`,
+      href: `/people/${person.id}/media`,
     });
 
   const secondaryNavigation = [

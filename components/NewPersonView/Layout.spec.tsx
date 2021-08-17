@@ -9,6 +9,10 @@ import {
 import * as relationshipsAPI from 'utils/api/relationships';
 import Layout from './Layout';
 import 'next/router';
+import {
+  FeatureFlagProvider,
+  FeatureSet,
+} from 'lib/feature-flags/feature-flags';
 
 import {
   mockedRelationshipData,
@@ -28,9 +32,11 @@ jest.mock('next/router', () => ({
 describe('Layout', () => {
   it('renders children, navigation and a primary action', () => {
     render(
-      <AuthProvider user={mockedUser}>
-        <Layout person={mockedResident}>Foo</Layout>
-      </AuthProvider>
+      <FeatureFlagProvider features={{}}>
+        <AuthProvider user={mockedUser}>
+          <Layout person={mockedResident}>Foo</Layout>
+        </AuthProvider>
+      </FeatureFlagProvider>
     );
     expect(screen.getByText('Foo'));
     expect(screen.getByText('Add something new'));
@@ -40,9 +46,11 @@ describe('Layout', () => {
 
   it("renders the user's name and caption", () => {
     render(
-      <AuthProvider user={mockedUser}>
-        <Layout person={mockedResident}>Foo</Layout>
-      </AuthProvider>
+      <FeatureFlagProvider features={{}}>
+        <AuthProvider user={mockedUser}>
+          <Layout person={mockedResident}>Foo</Layout>
+        </AuthProvider>
+      </FeatureFlagProvider>
     );
     expect(screen.getByText('Foo Bar'));
     expect(screen.getByText('#1 · Born 13 Nov 2020'));
@@ -82,9 +90,11 @@ describe('Layout', () => {
       revalidate: jest.fn(),
     }));
     render(
-      <AuthProvider user={mockedOnlyChildUser}>
-        <Layout person={mockedResident}>Foo</Layout>
-      </AuthProvider>
+      <FeatureFlagProvider features={{}}>
+        <AuthProvider user={mockedOnlyChildUser}>
+          <Layout person={mockedResident}>Foo</Layout>
+        </AuthProvider>
+      </FeatureFlagProvider>
     );
 
     const parentsRow = screen.queryByText('Relationships (3)');
@@ -102,9 +112,11 @@ describe('Layout', () => {
       revalidate: jest.fn(),
     }));
     render(
-      <AuthProvider user={mockedOnlyChildUser}>
-        <Layout person={mockedResident}>Foo</Layout>
-      </AuthProvider>
+      <FeatureFlagProvider features={{}}>
+        <AuthProvider user={mockedOnlyChildUser}>
+          <Layout person={mockedResident}>Foo</Layout>
+        </AuthProvider>
+      </FeatureFlagProvider>
     );
 
     const parentsRow = screen.queryByText('Relationships');
@@ -113,46 +125,52 @@ describe('Layout', () => {
 
   it("hides the timeline link if the user isn't authorised", () => {
     render(
-      <AuthProvider user={mockedOnlyChildUser}>
-        <Layout person={mockedResident}>Foo</Layout>
-      </AuthProvider>
+      <FeatureFlagProvider features={{}}>
+        <AuthProvider user={mockedOnlyChildUser}>
+          <Layout person={mockedResident}>Foo</Layout>
+        </AuthProvider>
+      </FeatureFlagProvider>
     );
     expect(screen.queryByText('Timeline')).toBe(null);
   });
 
   it('tells unauthorised users when a resident is restricted', () => {
     render(
-      <AuthProvider user={mockedOnlyAdultUser}>
-        <Layout
-          person={{
-            ...mockedResident,
-            restricted: 'Y',
-          }}
-        >
-          Foo
-        </Layout>
-      </AuthProvider>
+      <FeatureFlagProvider features={{}}>
+        <AuthProvider user={mockedOnlyAdultUser}>
+          <Layout
+            person={{
+              ...mockedResident,
+              restricted: 'Y',
+            }}
+          >
+            Foo
+          </Layout>
+        </AuthProvider>
+      </FeatureFlagProvider>
     );
     expect(screen.getByText('This person is restricted'));
   });
 
   it("doesn't bother to tell authorised users when a resident is restricted", () => {
     render(
-      <AuthProvider
-        user={{
-          ...mockedUser,
-          hasUnrestrictedPermissions: true,
-        }}
-      >
-        <Layout
-          person={{
-            ...mockedResident,
-            restricted: 'Y',
+      <FeatureFlagProvider features={{}}>
+        <AuthProvider
+          user={{
+            ...mockedUser,
+            hasUnrestrictedPermissions: true,
           }}
         >
-          Foo
-        </Layout>
-      </AuthProvider>
+          <Layout
+            person={{
+              ...mockedResident,
+              restricted: 'Y',
+            }}
+          >
+            Foo
+          </Layout>
+        </AuthProvider>
+      </FeatureFlagProvider>
     );
     expect(screen.queryByText('This person is restricted')).toBeNull();
   });

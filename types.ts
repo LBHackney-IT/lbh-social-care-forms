@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { Submission } from 'data/flexibleForms/forms.types';
 
 export type ErrorAPI = AxiosError;
 
@@ -317,4 +318,28 @@ export type WarningNote = DisclosedNote | UndisclosedNote;
 
 export interface WarningNotes {
   notes: Array<WarningNote>;
+}
+
+interface File {
+  // mime type
+  type: 'image/png' | 'image/jpg' | 'image/jpeg' | 'application/pdf';
+  // filesize in bytes
+  size: number;
+  // s3 url
+  url: string;
+}
+
+export interface Media {
+  mediaId: string;
+  resident: Resident;
+  title: string;
+  uploadedAt: string;
+  uploadedBy: Worker | null;
+  files: {
+    original: File;
+    medium?: File;
+    thumbnail?: File;
+  };
+  // optional relation
+  submission: Submission | null;
 }
