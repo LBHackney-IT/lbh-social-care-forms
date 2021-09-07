@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import s from './DashboardWrapper.module.scss';
 import MyData from './MyData';
+import { ConditionalFeature } from 'lib/feature-flags/feature-flags';
 
 interface NavLinkProps {
   href: string;
@@ -58,6 +59,14 @@ const DashboardWrapper = ({ children }: Props): React.ReactElement => (
                   {link.text}
                 </NavLink>
               ))}
+
+              <ConditionalFeature name="workflows-pilot">
+                <NavLink
+                  href={process.env.NEXT_PUBLIC_WORKFLOWS_PILOT_URL as string}
+                >
+                  Workflows
+                </NavLink>
+              </ConditionalFeature>
             </ul>
           </nav>
           <MyData />

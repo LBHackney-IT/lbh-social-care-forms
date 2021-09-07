@@ -14,6 +14,20 @@ describe('Layout', () => {
     expect(screen.getByText('Foo'));
   });
 
+  it('can suppress the close button', () => {
+    render(
+      <Dialog
+        onDismiss={jest.fn()}
+        isOpen={true}
+        title="Example title"
+        showCloseButton={false}
+      >
+        Foo
+      </Dialog>
+    );
+    expect(screen.queryByText('Close')).toBeNull();
+  });
+
   it('calls the correct handler when dismissed', () => {
     render(
       <Dialog onDismiss={mockHandler} isOpen={true} title="Example title">

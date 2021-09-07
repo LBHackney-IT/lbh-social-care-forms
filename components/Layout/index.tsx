@@ -4,6 +4,7 @@ import SkipLink from './SkipLink/SkipLink';
 import PhaseBanner from './PhaseBanner/PhaseBanner';
 import BackButton from './BackButton/BackButton';
 import Footer from './Footer/Footer';
+import OnboardingDialog from 'components/OnboardingDialog';
 
 export interface Props {
   children: React.ReactChild;
@@ -32,6 +33,8 @@ const Layout = ({
           {children}
         </main>
       </div>
+
+      <OnboardingDialog />
 
       <Footer />
     </>

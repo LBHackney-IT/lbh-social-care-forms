@@ -7,6 +7,7 @@ import ADULT_GFORMS from 'data/googleForms/adultForms';
 import CHILD_GFORMS from 'data/googleForms/childForms';
 import 'data/flexibleForms';
 import 'next/router';
+import { FeatureFlagProvider } from 'lib/feature-flags/feature-flags';
 
 jest.mock('next/router', () => ({
   useRouter: () => ({
@@ -24,11 +25,13 @@ describe('AddFormDialog', () => {
   it('shows forms from two sources', () => {
     render(
       <AuthProvider user={mockedUser}>
-        <AddFormDialog
-          isOpen={true}
-          onDismiss={jest.fn()}
-          person={mockedResident}
-        />
+        <FeatureFlagProvider features={{}}>
+          <AddFormDialog
+            isOpen={true}
+            onDismiss={jest.fn()}
+            person={mockedResident}
+          />
+        </FeatureFlagProvider>
       </AuthProvider>
     );
     expect(screen.getAllByRole('listitem').length).toBeGreaterThan(1);
@@ -45,11 +48,13 @@ describe('AddFormDialog', () => {
     // adult
     render(
       <AuthProvider user={mockedUser}>
-        <AddFormDialog
-          isOpen={true}
-          onDismiss={jest.fn()}
-          person={mockedResident}
-        />
+        <FeatureFlagProvider features={{}}>
+          <AddFormDialog
+            isOpen={true}
+            onDismiss={jest.fn()}
+            person={mockedResident}
+          />
+        </FeatureFlagProvider>
       </AuthProvider>
     );
     expect(screen.getByText(ADULT_GFORMS[0].text));
@@ -59,11 +64,13 @@ describe('AddFormDialog', () => {
   it('only shows forms appropriate to the child service context', () => {
     render(
       <AuthProvider user={mockedUser}>
-        <AddFormDialog
-          isOpen={true}
-          onDismiss={jest.fn()}
-          person={{ ...mockedResident, contextFlag: 'C' }}
-        />
+        <FeatureFlagProvider features={{}}>
+          <AddFormDialog
+            isOpen={true}
+            onDismiss={jest.fn()}
+            person={{ ...mockedResident, contextFlag: 'C' }}
+          />
+        </FeatureFlagProvider>
       </AuthProvider>
     );
     expect(screen.getByText(CHILD_GFORMS[0].text));
@@ -73,11 +80,13 @@ describe('AddFormDialog', () => {
   it('adds prefill parameters to google forms', () => {
     render(
       <AuthProvider user={mockedUser}>
-        <AddFormDialog
-          isOpen={true}
-          onDismiss={jest.fn()}
-          person={mockedResident}
-        />
+        <FeatureFlagProvider features={{}}>
+          <AddFormDialog
+            isOpen={true}
+            onDismiss={jest.fn()}
+            person={mockedResident}
+          />
+        </FeatureFlagProvider>
       </AuthProvider>
     );
     expect(
@@ -92,11 +101,13 @@ describe('AddFormDialog', () => {
   it('supports canonical urls', () => {
     render(
       <AuthProvider user={mockedUser}>
-        <AddFormDialog
-          isOpen={true}
-          onDismiss={jest.fn()}
-          person={{ ...mockedResident, contextFlag: 'C' }}
-        />
+        <FeatureFlagProvider features={{}}>
+          <AddFormDialog
+            isOpen={true}
+            onDismiss={jest.fn()}
+            person={{ ...mockedResident, contextFlag: 'C' }}
+          />
+        </FeatureFlagProvider>
       </AuthProvider>
     );
     fireEvent.change(screen.getByLabelText('Search for a form'), {
@@ -110,11 +121,13 @@ describe('AddFormDialog', () => {
   it('allows searching for a form', () => {
     render(
       <AuthProvider user={mockedUser}>
-        <AddFormDialog
-          isOpen={true}
-          onDismiss={jest.fn()}
-          person={mockedResident}
-        />
+        <FeatureFlagProvider features={{}}>
+          <AddFormDialog
+            isOpen={true}
+            onDismiss={jest.fn()}
+            person={mockedResident}
+          />
+        </FeatureFlagProvider>
       </AuthProvider>
     );
     expect(screen.getAllByRole('listitem').length).toBeGreaterThan(10);
@@ -141,11 +154,13 @@ describe('AddFormDialog', () => {
           hasAdminPermissions: false,
         }}
       >
-        <AddFormDialog
-          isOpen={true}
-          onDismiss={jest.fn()}
-          person={mockedResident}
-        />
+        <FeatureFlagProvider features={{}}>
+          <AddFormDialog
+            isOpen={true}
+            onDismiss={jest.fn()}
+            person={mockedResident}
+          />
+        </FeatureFlagProvider>
       </AuthProvider>
     );
     expect(screen.queryAllByText('In preview', { exact: false }).length).toBe(
@@ -154,11 +169,13 @@ describe('AddFormDialog', () => {
 
     render(
       <AuthProvider user={mockedAdminUser}>
-        <AddFormDialog
-          isOpen={true}
-          onDismiss={jest.fn()}
-          person={mockedResident}
-        />
+        <FeatureFlagProvider features={{}}>
+          <AddFormDialog
+            isOpen={true}
+            onDismiss={jest.fn()}
+            person={mockedResident}
+          />
+        </FeatureFlagProvider>
       </AuthProvider>
     );
     expect(
